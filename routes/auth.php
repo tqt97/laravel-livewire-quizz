@@ -9,6 +9,8 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\VerifyEmail;
 use App\Livewire\Questions\QuestionForm;
 use App\Livewire\Questions\QuestionList;
+use App\Livewire\Quiz\QuizForm;
+use App\Livewire\Quiz\QuizList;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -33,6 +35,10 @@ Route::middleware('auth')->group(function () {
         Route::get('questions', QuestionList::class)->name('questions');
         Route::get('questions/create', QuestionForm::class)->name('questions.create');
         Route::get('questions/{question}', QuestionForm::class)->name('questions.edit');
+
+        Route::get('quizzes', QuizList::class)->name('quizzes');
+        Route::get('quizzes/create', QuizForm::class)->name('quiz.create');
+        Route::get('quizzes/{quiz}', QuizForm::class)->name('quiz.edit');
     });
 });
 
