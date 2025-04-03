@@ -7,6 +7,8 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\VerifyEmail;
+use App\Livewire\Questions\QuestionForm;
+use App\Livewire\Questions\QuestionList;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -26,6 +28,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('confirm-password', ConfirmPassword::class)
         ->name('password.confirm');
+
+    Route::middleware('isAdmin')->group(function () {
+        Route::get('questions', QuestionList::class)->name('questions');
+        Route::get('questions/create', QuestionForm::class)->name('questions.create');
+        Route::get('questions/{question}', QuestionForm::class)->name('questions.edit');
+    });
 });
 
 Route::post('logout', App\Livewire\Actions\Logout::class)
