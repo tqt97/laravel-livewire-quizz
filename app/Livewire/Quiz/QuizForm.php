@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Quiz;
 
+use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
@@ -30,6 +31,8 @@ class QuizForm extends Component
 
     public function mount(Quiz $quiz): void
     {
+        $this->initListsForFields();
+
         if ($quiz->exists) {
             $this->quiz = $quiz;
             $this->editing = true;
@@ -38,6 +41,8 @@ class QuizForm extends Component
             $this->description = $quiz->description;
             $this->published = $quiz->published;
             $this->public = $quiz->public;
+
+            $this->questions = $quiz->questions()->pluck('id')->toArray();
         } else {
             $this->published = false;
             $this->public = false;
@@ -59,12 +64,19 @@ class QuizForm extends Component
             $this->quiz->update($this->only(['title', 'slug', 'description', 'published', 'public']));
         }
 
+        $this->quiz->questions()->sync($this->questions);
+
         return to_route('quizzes');
     }
 
     public function render()
     {
         return view('livewire.quiz.quiz-form');
+    }
+
+    protected function initListsForFields(): void
+    {
+        $this->listsForFields['questions'] = Question::pluck('question_text', 'id')->toArray();
     }
 
     protected function rules(): array
