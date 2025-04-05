@@ -5,9 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Test;
 use App\Models\TestAnswer;
 use App\Models\User;
+use Illuminate\View\View;
 
 class ResultController extends Controller
 {
+    public function index(): View
+    {
+        $results = Test::with('quiz')->withCount('questions')->where('user_id', auth()->id())->paginate();
+
+        return view('front.results.index', [
+            'results' => $results,
+        ]);
+    }
+
     public function show(Test $test)
     {
         $users = null;

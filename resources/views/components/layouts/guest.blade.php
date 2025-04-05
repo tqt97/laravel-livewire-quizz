@@ -40,10 +40,15 @@
                 @endauth
             </nav>
         @endif
+        @auth
+            <a href="{{ route('results.index') }}" :active="request()->routeIs('results.index')">
+                My Results
+            </a>
+        @endauth
     </header>
     <div
         class="flex1 items-center justify-center w-full max-w-7xl transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
-       {{ $slot }}
+        {{ $slot }}
     </div>
 
     @if (Route::has('login'))
